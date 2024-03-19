@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  next_app:
+    build:
+      context: . # ビルドに必要なファイルが存在するディレクトリのパスを指定
+      dockerfile: Dockerfile # ビルドに使用するDockerfileの名前を指定
+
+    ports:
+      - "3000:3000" # ホストのポート3000をコンテナのポート3000にマッピング
