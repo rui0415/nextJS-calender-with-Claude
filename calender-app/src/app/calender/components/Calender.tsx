@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Event from "./Event";
+import styles from "../styles/Calender.module.css";
 
 interface Event {
   id: number;
@@ -12,9 +13,21 @@ interface Event {
 export default function Calender() {
   const [date, setDate] = useState(new Date());
   const [events, setEvents] = useState<Event[]>([]);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newTitle, setNewTitle] = useState("");
+  const [newDate, setNewDate] = useState(new Date());
 
-  const addEvent = (title: string, date: Date) => {
-    setEvents([...events, { id: events.length, title, date }]);
+  const addEvent = () => {
+    if (newTitle.trim() === "") {
+      alert("タイトルを入力してください");
+      return;
+    }
+    setEvents([
+      ...events,
+      { id: events.length, title: newTitle, date: newDate },
+    ]);
+    setNewTitle("");
+    setShowAddForm(false);
   };
 
   const month = date.toLocaleDateString("en-US", { month: "long" });
@@ -70,17 +83,34 @@ export default function Calender() {
   };
 
   return (
-    <div>
-      <h1>
-        {month} {year}
-      </h1>
-      <button onClick={prevMonth}>Previous</button>
-      <button onClick={nextMonth}>Next</button>
-      <div>
+    <div className="bg-white rounded-lg shadow-md p-4">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">
+          {month} {year}
+        </h1>
+        <div>
+          <button
+            onClick={prevMonth}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
+          >
+            Previous
+          </button>
+          <button
+            onClick={nextMonth}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+      <div className="grid grid-cols-7 gap-2">
         {grid.map((week, i) => (
-          <div key={i}>
+          <React.Fragment key={i}>
             {week.map((day, j) => (
-              <div key={`${i}-${j}`}>
+              <div
+                key={`${i}-${j}`}
+                className="p-2 bg-gray-200 rounded-lg text-center"
+              >
                 {day}
                 {events
                   .filter((event) => {
@@ -95,16 +125,39 @@ export default function Calender() {
                     );
                   })
                   .map((event) => (
-                    <Event
+                    <div
                       key={event.id}
-                      event={event}
-                      onUpdate={updateEvent}
-                    />
+                      className="bg-blue-500 text-white rounded-md p-1 mt-1"
+                    >
+                      <Event event={event} onUpdate={updateEvent} />
+                    </div>
                   ))}
               </div>
             ))}
-          </div>
+          </React.Fragment>
         ))}
+      </div>
+
+      <div>
+        {!showAddForm ? (
+          <button onClick={() => setShowAddForm(true)}>予定を追加</button>
+        ) : (
+          <div className={styles.formContainer}>
+            <input
+              type="text"
+              placeholder="予定のタイトル"
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+            />
+            <input
+              type="date"
+              value={newDate.toISOString().split("T")[0]}
+              onChange={(e) => setNewDate(new Date(e.target.value))}
+            />
+            <button onClick={addEvent}>追加</button>
+            <button onClick={() => setShowAddForm(false)}>キャンセル</button>
+          </div>
+        )}
       </div>
     </div>
   );
