@@ -26,12 +26,8 @@ const Event: React.FC<EventProps> = ({ event, onUpdate }) => {
       <input
         type="text"
         value={updatedTitle}
+        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray dark:focus:ring-blue-500 dark:focus:border-blue-500"
         onChange={(e) => setUpdatedTitle(e.target.value)}
-      />
-      <input
-        type="date"
-        value={updatedDate.toISOString().split("T")[0]}
-        onChange={(e) => setUpdatedDate(new Date(e.target.value))}
       />
       <button onClick={handleUpdate}>更新</button>
     </div>
