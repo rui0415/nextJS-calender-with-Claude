@@ -140,22 +140,36 @@ export default function Calender() {
 
       <div>
         {!showAddForm ? (
-          <button onClick={() => setShowAddForm(true)}>予定を追加</button>
+          <div className="flex bg-cyan-500 justify-center">
+            <button onClick={() => setShowAddForm(true)}>予定を追加</button>
+          </div>
         ) : (
-          <div className={styles.formContainer}>
+          <div className="justify-center">
             <input
               type="text"
               placeholder="予定のタイトル"
               value={newTitle}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               onChange={(e) => setNewTitle(e.target.value)}
             />
             <input
               type="date"
               value={newDate.toISOString().split("T")[0]}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               onChange={(e) => setNewDate(new Date(e.target.value))}
             />
-            <button onClick={addEvent}>追加</button>
-            <button onClick={() => setShowAddForm(false)}>キャンセル</button>
+            <button
+              className="row bg-green-400 justify-center duration-300"
+              onClick={addEvent}
+            >
+              追加
+            </button>
+            <button
+              className="row bg-red-300 justify-center"
+              onClick={() => setShowAddForm(false)}
+            >
+              キャンセル
+            </button>
           </div>
         )}
       </div>
